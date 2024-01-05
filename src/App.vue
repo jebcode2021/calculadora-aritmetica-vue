@@ -1,5 +1,8 @@
 <script setup>
 import { reactive } from 'vue';
+import Cabecalho from './components/Cabecalho.vue';
+import Formulario from './components/Formulario.vue';
+import ListaDeTarefas from './components/ListaDeCalculadora.vue';
 
 const estado = reactive({
   calculadoras: [],
@@ -57,71 +60,17 @@ const filtrarCalculadora = () => {
   }
 };
 
+const getNumeroCalculadoras = () => {
+  return estado.calculadoras.length;
+};
+
 </script>
 
 <template>
   <div class="container">
-    <header class="p-5 mb-4 mt-4 bg-light rounded-3">
-      <h1>Calculadora de aritmética</h1>
-      <p>
-        Digite dois números e selecione a operação desejada para adicionar uma calculadora.
-        <br> <br>
-        Para filtrar as calculadoras, selecione a operação desejada no campo "Filtrar por operação".
-        <br> <br>
-        Para excluir uma calculadora, clique no botão "Excluir".
-        <br> <br>
-        Você já adicionou <strong> {{ estado.calculadoras.length }} </strong> calculadora(s).
-      </p>
-    </header>
-
-    <form @submit.prevent="adicionarCalculadora">
-      <div class="row">
-        <div class="col-1">
-          <input required type="number" class="form-control" placeholder="Digite" :value="estado.numero1" @change="estado.numero1 = $event.target.value">
-        </div>
-        <div class="col-1">
-          <input required type="number" class="form-control" placeholder="Digite" :value="estado.numero2" @change="estado.numero2 = $event.target.value">
-        </div>
-        <div class="col-2">
-          <select class="form-select" @change="selecionarOperacao($event.target.value)">
-            <option selected>Selecione operação</option>
-            <option value="soma">Soma</option>
-            <option value="subtracao">Subtração</option>
-            <option value="multiplicacao">Multiplicação</option>
-            <option value="divisao">Divisão</option>
-          </select>
-        </div>
-        <div class="col">
-          <button type="submit" class="btn btn-primary">Adicionar calculadora</button>
-        </div>
-        <div class="col-2">
-          <select @change="evento => estado.filtro = evento.target.value" class="form-select">
-            <option selected>Filtrar por operação</option>
-            <option value="soma">Soma</option>
-            <option value="subtracao">Subtração</option>
-            <option value="multiplicacao">Multiplicação</option>
-            <option value="divisao">Divisão</option>
-          </select>
-        </div>
-      </div>
-    </form>
-
-    <div class="row mt-5">
-      <div class="col-3 d-flex flex-column" v-for="calculadora in filtrarCalculadora()" :key="calculadora.id">
-          <div class="card mt-3">
-              <div class="card-body">
-                <p class="card-text">ID: {{ calculadora.id }}</p>
-                <p class="card-text">Calculadora: {{ calculadora.numero1 }} {{ calculadora.operacao }} {{ calculadora.numero2 }}
-                </p>
-                <p class="card-text">Resultado: {{ calculadora.resultado }}</p>
-                <p class="card-text">Operação: {{ calculadora.operacao }}</p>
-                <div class="d-grid gap-2">
-                  <button class="btn btn-danger" type="button" @click="excluirCalculadora(calculadora.id)">Excluir</button>
-                </div>
-              </div>
-          </div>
-      </div>
-    </div>
+    <Cabecalho :calculadoras="getNumeroCalculadoras()" />
+    <Formulario :trocar-filtro="evento => estado.filtro = evento.target.value" :numero1="estado.numero1" :numero2="estado.numero2" :editar-calculadora="evento => estado.numero1 = evento.target.value" :editar-calculadora2="evento => estado.numero2 = evento.target.value"  :adicionar-calculadora="adicionarCalculadora" :selecionar-operacao="evento => selecionarOperacao(evento.target.value)" />
+    <ListaDeTarefas :calculadoras="filtrarCalculadora()" :excluirCalculadora="excluirCalculadora" />
   </div>
 </template>
 
