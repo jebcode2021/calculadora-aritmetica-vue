@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
+
 import Cabecalho from './components/Cabecalho.vue'
 import Operacao from './components/Operacao.vue'
 import Resultado from './components/Resultado.vue'
@@ -25,6 +26,10 @@ const resultado = () => {
   }
 }
 
+
+const getNumeroCalculadoras = () => {
+  return estado.calculadoras.length;
+};
 
 </script>
 
