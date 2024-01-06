@@ -40,7 +40,7 @@ select {
 }
 
 .formOperacao {
-    width: 20%;
+    width: 50%;
     margin: 0 auto;
 }
 </style>
